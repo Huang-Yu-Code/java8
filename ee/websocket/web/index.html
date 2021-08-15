@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <el-row>
+        <!--在线列表-->
+        <el-col :span="4">
+            <el-table
+                    :data="users.filter(item=>!userKey||(item.indexOf(userKey))!=-1)"
+                    stripe
+                    style="width: 100%">
+                <el-table-column
+                        :label="'在线用户: ' +users.length+' 人'">
+                    <template slot-scope="scope">
+                        <i class="el-icon-user-solid"></i>
+                        <span style="margin-left: 10px; color: blue">{{ scope.row }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        align="right">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="userKey"
+                                size="mini"
+                                placeholder="输入关键字搜索"/>
+                    </template>
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row==message.username">本人</el-tag>
+                        <el-tag v-else>在线</el-tag>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-col>
+        <!--聊天窗口-->
+        <el-col :span="14">
+            <el-card class="box-card" v-if="!disabled">
+                <div slot="header" class="clearfix">
+                    <el-badge :value="num" :max="99" v-show="num!==0" class="item">
+                        <el-button @click="setCurrent">新的消息</el-button>
+                    </el-badge>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="clearMessages">清空聊天记录
+                    </el-button>
+                    <el-input style="float: right; padding: 3px 0"
+                              v-model="messageKey"
+                              placeholder="输入关键字搜索">
+                        <el-select v-model="select" slot="prepend" placeholder="请选择">
+                            <el-option label="用户名" value="username"></el-option>
+                            <el-option label="消息" value="content"></el-option>
+                        </el-select>
+                    </el-input>
+                </div>
+                <el-table
+                        ref="singleTable"
+                        :data="messages.filter(item=>!messageKey||(item[select].indexOf(messageKey))!=-1)"
+                        height="350"
+                        style="width: 100%"
+                        highlight-current-row
+                        :row-class-name="tableRowClassName"
+                        :default-sort="{prop: 'date', order: 'descending'}">
+                    <el-table-column
+                            prop="time"
+                            label="时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="username"
+                            label="姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="content"
+                            label="消息">
+                    </el-table-column>
+                </el-table>
+                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
+                <div>
+                    <el-input
+                            type="textarea"
+                            :autosize="{ minRows: 4, maxRows: 4}"
+                            placeholder="请输入内容"
+                            show-word-limit
+                            maxlength="80"
+                            resize="none"
+                            v-model="message.content"
+                            :disabled="disabled">
+                    </el-input>
+
+                    <div style="margin: 20px 0;"></div>
+
+                    <el-button type="success" @click="sendMessage" :disabled="disabled">发送</el-button>
+                </div>
+            </el-card>
+            <el-empty description="未连接" v-else></el-empty>
+        </el-col>
+        <!--登录以及通知-->
+        <el-col :span="6">
+            <el-carousel indicator-position="outside" style="margin-top: 200px">
+                <el-carousel-item v-for="image in images" :key="image">
+                    <el-image :src="image" fit="cover"></el-image>
+                </el-carousel-item>
+            </el-carousel>
+            <el-card class="box-card">
+                <div style="margin-top: 15px;">
+                    <el-input placeholder="请输入用户名" v-model="message.username" class="input-with-select"
+                              :disabled="!disabled">
+                        <template slot="prepend">用户名</template>
+                    </el-input>
+                    <el-button type="danger" @click="disconnect" v-if="!disabled">断开连接</el-button>
+                    <el-button type="primary" @click="connect" v-else>连接</el-button>
+                    <el-button type="success" @click="setUsername" v-if="disabled">随机名称</el-button>
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
+</div>
+<script src="websocket.js"></script>
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+
+    .el-select .el-input {
+        width: 100px;
+    }
+
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 18px;
+        opacity: 0.75;
+        line-height: 300px;
+        margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+        background-color: #d3dce6;
+    }
+</style>
+</body>
+</html>

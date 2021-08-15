@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.codingob.web.mapper.AccountRoleMapper">
+
+    <insert id="create">
+        insert into account_role(account_id, role_id, create_time, `delete`)
+        VALUES (#{accountId}, #{roleId}, current_time, 0)
+    </insert>
+    <update id="updateById">
+        update account_role
+        set account_id=#{accountId},
+            role_id=#{roleId}
+        where id = #{id}
+          and `delete` = 0
+    </update>
+    <delete id="deleteById">
+        update account_role
+        set `delete`=1
+        where id = #{id}
+          and `delete` = 0
+    </delete>
+    <select id="getById" resultType="com.github.codingob.web.entity.AccountRole">
+        select id, account_id, role_id
+        from account_role
+        where id = #{id}
+          and `delete` = 0
+    </select>
+    <select id="getByAccountId" resultType="com.github.codingob.web.entity.AccountRole">
+        select id, account_id, role_id, create_time, `delete`
+        from account_role
+        where account_id = #{accountId}
+          and `delete` = 0;
+    </select>
+
+</mapper>

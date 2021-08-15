@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.codingob.web.mapper.RolePermissionMapper">
+
+    <insert id="create">
+        insert into role_permission(role_id, permission_id, create_time, `delete`)
+        VALUES (#{roleId}, #{permitId}, current_time, 0)
+    </insert>
+    <update id="updateById">
+        update role_permission
+        set role_id=#{roleId},
+            permission_id=#{permitId}
+        where id = #{id}
+          and `delete` = 0
+    </update>
+    <delete id="deleteById">
+        update role_permission
+        set `delete`=1
+        where id = #{id}
+          and `delete` = 0
+    </delete>
+    <select id="getById" resultType="com.github.codingob.web.entity.RolePermission">
+        select id, role_id, permission_id
+        from role_permission
+        where id = #{id}
+          and `delete` = 0
+    </select>
+    <select id="getByRoleId" resultType="com.github.codingob.web.entity.RolePermission">
+        select id, role_id, permission_id, create_time, `delete`
+        from role_permission
+        where role_id = #{roleId}
+          and `delete` = 0
+    </select>
+
+</mapper>

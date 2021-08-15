@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--替换需要动态配置的属性值-->
+    <properties resource="jdbc.properties"/>
+    <settings>
+        <!--全局性地开启或关闭所有映射器配置文件中已配置的任何缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。 特定关联关系中可通过设置 fetchType 属性来覆盖该项的开关状态。-->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!--开启驼峰命名自动映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--指定 MyBatis 所用日志的具体实现，未指定时将自动查找-->
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <plugins>
+        <!--PageHelper分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="param1" value="value1"/>
+        </plugin>
+    </plugins>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--数据源-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!-- 使用相对于类路径的资源引用 -->
+        <mapper resource="mapper/EntityMapper.xml"/>
+    </mappers>
+</configuration>

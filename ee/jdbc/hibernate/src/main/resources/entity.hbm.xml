@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.github.codingob.hibernate.entity.Entity" table="ENTITY">
+        <!-- name代表的是User类中的id属性，column代表的是user表中的主键id -->
+        <id name="id" column="id">
+            <!-- 主键生成策略 -->
+            <generator class="native"/>
+        </id>
+        <!-- 其他属性使用property标签映射 -->
+        <property name="name" column="name" type="java.lang.String"/>
+        <property name="gender" type="boolean" column="gender"/>
+        <property name="money" type="java.math.BigDecimal" column="money"/>
+        <property name="createTime" type="java.sql.Timestamp" column="create_time"/>
+        <property name="delete" type="boolean" column="delete"/>
+    </class>
+</hibernate-mapping>

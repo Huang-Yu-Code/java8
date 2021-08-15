@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.codingob.web.mapper.AccountMapper">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO account(`username`, `password`, `lock`, `create_time`, `delete`)
+        VALUES (#{username}, #{password}, 0, current_timestamp(), 0)
+    </insert>
+    <update id="updatePasswordById">
+        UPDATE account
+        SET password=#{password}
+        WHERE id = #{id}
+    </update>
+    <update id="updateLockById">
+        UPDATE account
+        SET `lock`=#{lock}
+        WHERE id = #{id}
+          and `delete` = 0;
+    </update>
+    <delete id="deleteById">
+        UPDATE account
+        SET `lock`=1,
+            `delete`=1
+        WHERE id = #{id}
+    </delete>
+    <select id="getById" resultType="com.github.codingob.web.entity.Account">
+        SELECT id, username, password, `lock`, create_time, `delete`
+        FROM account
+        WHERE id = #{id}
+          and `delete` = 0
+    </select>
+    <select id="hasUsername" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM account
+        where username = #{username}
+    </select>
+    <select id="getByUsername" resultType="com.github.codingob.web.entity.Account">
+        SELECT id, username, password, `lock`, create_time, `delete`
+        FROM account
+        WHERE username = #{username}
+          and `delete` = 0
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.codingob.web.mapper.PermissionMapper">
+
+    <insert id="create">
+        insert into permission(name, create_time, `delete`)
+        VALUES (#{name}, current_time, 0)
+    </insert>
+    <update id="updateById">
+        update permission
+        set name=#{name}
+        where id = #{id}
+          and `delete` = 0
+    </update>
+    <delete id="deleteById">
+        update permission
+        set `delete`=1
+        where id = #{id}
+          and `delete` = 0
+    </delete>
+    <select id="getById" resultType="com.github.codingob.web.entity.Permission">
+        select id, name
+        from permission
+        where id = #{id}
+          and `delete` = 0
+    </select>
+
+</mapper>
