@@ -11,30 +11,13 @@ import java.sql.Timestamp;
  * @since JDK1.8
  */
 public class Entity {
-    /**
-     * id
-     */
+
     private Integer id;
-    /**
-     * 姓名
-     */
     private String name;
-    /**
-     * 性别
-     */
     private boolean gender;
-    /**
-     * 账户余额
-     */
     private BigDecimal money;
-    /**
-     * 创建时间
-     */
     private Timestamp createTime;
-    /**
-     * 逻辑删除
-     */
-    private boolean isDelete;
+    private boolean delete;
 
     public Entity() {
 
@@ -86,11 +69,11 @@ public class Entity {
     }
 
     public boolean isDelete() {
-        return isDelete;
+        return delete;
     }
 
     public void setDelete(boolean delete) {
-        isDelete = delete;
+        this.delete = delete;
     }
 
     @Override
@@ -101,7 +84,7 @@ public class Entity {
                 ", gender=" + gender +
                 ", money=" + money +
                 ", createTime=" + createTime +
-                ", delete=" + isDelete +
+                ", delete=" + delete +
                 '}';
     }
 }

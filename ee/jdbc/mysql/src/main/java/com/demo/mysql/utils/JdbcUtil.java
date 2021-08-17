@@ -9,7 +9,7 @@ import java.sql.*;
  * @version 1.0.0
  * @since JDK1.8
  */
-public class MysqlUtil {
+public class JdbcUtil {
     static {
         try {
             String driverClassName = "com.mysql.cj.jdbc.Driver";

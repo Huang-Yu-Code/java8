@@ -1,7 +1,7 @@
 package com.demo.mysql.dao;
 
 import com.demo.mysql.entity.Entity;
-import com.demo.mysql.utils.MysqlUtil;
+import com.demo.mysql.utils.JdbcUtil;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -16,25 +16,10 @@ import java.util.List;
  * @since JDK1.8
  */
 public class EntityDao {
-    /**
-     * 执行的SQL语句
-     */
     private String sql;
-    /**
-     * 更新数据的影响行数
-     */
     private int rows;
-    /**
-     * 数据库连接
-     */
     private Connection connection;
-    /**
-     * 预编译SQL语句，可以防止SQL注入问题
-     */
     private PreparedStatement preparedStatement;
-    /**
-     * 查询数据的结果集
-     */
     private ResultSet resultSet;
 
     /**
@@ -45,7 +30,7 @@ public class EntityDao {
      */
     public int create(Entity entity) {
         sql = "insert into entity(id,name, gender) values (?,?,?)";
-        connection = MysqlUtil.getConnection();
+        connection = JdbcUtil.getConnection();
         try {
             preparedStatement = connection.prepareStatement(sql);
             if (entity.getId() == null) {
@@ -59,7 +44,7 @@ public class EntityDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(preparedStatement, connection);
+            JdbcUtil.close(preparedStatement, connection);
         }
         return rows;
     }
@@ -72,10 +57,10 @@ public class EntityDao {
      * @return 数据集合
      */
     private List<Entity> getList(int page, int size) {
-        sql = "select * from entity where is_delete=0 limit ?, ?";
+        sql = "select * from entity where `delete`=0 limit ?, ?";
         List<Entity> list = new ArrayList<>();
         try {
-            connection = MysqlUtil.getConnection();
+            connection = JdbcUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, page);
             preparedStatement.setInt(2, size);
@@ -87,13 +72,13 @@ public class EntityDao {
                 entity.setGender(resultSet.getBoolean("gender"));
                 entity.setMoney(resultSet.getBigDecimal("money"));
                 entity.setCreateTime(resultSet.getTimestamp("create_time"));
-                entity.setDelete(resultSet.getBoolean("is_delete"));
+                entity.setDelete(resultSet.getBoolean("delete"));
                 list.add(entity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(resultSet, preparedStatement, connection);
+            JdbcUtil.close(resultSet, preparedStatement, connection);
         }
         return list;
     }
@@ -131,10 +116,10 @@ public class EntityDao {
      * @return 实体
      */
     public Entity getById(int id) {
-        sql = "select * from entity where id=? and is_delete=0;";
+        sql = "select * from entity where id=? and `delete`=0;";
         Entity entity = null;
         try {
-            connection = MysqlUtil.getConnection();
+            connection = JdbcUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -145,12 +130,12 @@ public class EntityDao {
                 entity.setGender(resultSet.getBoolean("gender"));
                 entity.setMoney(resultSet.getBigDecimal("money"));
                 entity.setCreateTime(resultSet.getTimestamp("create_time"));
-                entity.setDelete(resultSet.getBoolean("is_delete"));
+                entity.setDelete(resultSet.getBoolean("delete"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(resultSet, preparedStatement, connection);
+            JdbcUtil.close(resultSet, preparedStatement, connection);
         }
         return entity;
     }
@@ -162,8 +147,8 @@ public class EntityDao {
      * @return 影响行数
      */
     public int updateById(Entity entity) {
-        sql = "update entity set name=?,gender=?,money=? where id=? and is_delete=0;";
-        connection = MysqlUtil.getConnection();
+        sql = "update entity set name=?,gender=?,money=? where id=? and `delete`=0;";
+        connection = JdbcUtil.getConnection();
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getName());
@@ -174,7 +159,7 @@ public class EntityDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(preparedStatement, connection);
+            JdbcUtil.close(preparedStatement, connection);
         }
         return rows;
     }
@@ -200,9 +185,9 @@ public class EntityDao {
         if (delete) {
             sql = "delete from entity where id=?;";
         } else {
-            sql = "update entity set is_delete=1 where id=? and is_delete=0;";
+            sql = "update entity set `delete`=1 where id=? and `delete`=0;";
         }
-        connection = MysqlUtil.getConnection();
+        connection = JdbcUtil.getConnection();
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -210,7 +195,7 @@ public class EntityDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(preparedStatement, connection);
+            JdbcUtil.close(preparedStatement, connection);
         }
         return rows;
     }
@@ -224,9 +209,9 @@ public class EntityDao {
      */
     public boolean transfer(int id1, int id2, BigDecimal money) {
         boolean result = false;
-        String sql1 = "update entity set money=? where id=? and is_delete=0";
-        String sql2 = "update entity set money=? where id=? and is_delete=0";
-        Connection connection = MysqlUtil.getConnection();
+        String sql1 = "update entity set money=? where id=? and `delete`=0";
+        String sql2 = "update entity set money=? where id=? and `delete`=0";
+        Connection connection = JdbcUtil.getConnection();
         PreparedStatement preparedStatement1 = null;
         PreparedStatement preparedStatement2 = null;
         try {
@@ -260,8 +245,8 @@ public class EntityDao {
             }
             e.printStackTrace();
         } finally {
-            MysqlUtil.close(null, preparedStatement2, null);
-            MysqlUtil.close(null, preparedStatement1, connection);
+            JdbcUtil.close(null, preparedStatement2, null);
+            JdbcUtil.close(null, preparedStatement1, connection);
         }
         return result;
     }
@@ -276,7 +261,7 @@ public class EntityDao {
     public boolean sqlInjection(int id, String name) {
         boolean login = false;
         sql = "select * from entity where id=" + id + " and name=" + name + ";";
-        connection = MysqlUtil.getConnection();
+        connection = JdbcUtil.getConnection();
         Statement statement = null;
         try {
             statement = connection.createStatement();
@@ -293,7 +278,7 @@ public class EntityDao {
                     e.printStackTrace();
                 }
             }
-            MysqlUtil.close(connection);
+            JdbcUtil.close(connection);
         }
         return login;
     }
