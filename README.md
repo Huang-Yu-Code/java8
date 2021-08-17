@@ -20,19 +20,9 @@ Version: JDK8
 
 ## IDE
 
-### Eclipse
-
-[下载](https://www.eclipse.org/downloads/packages/)
-
-### IDEA
-
-[下载](https://www.jetbrains.com/idea/download/)
-
-重置插件
-
-插件仓库地址:[https://plugins.zhile.io](https://plugins.zhile.io)
-
-插件: IDE Eval Reset
+* [Eclipse](https://www.eclipse.org/downloads/packages/)
+* [IDEA](https://www.jetbrains.com/idea/download/)
+  * [重置插件:IDE Eval Reset](https://plugins.zhile.io)
 
 ## JVM
 
