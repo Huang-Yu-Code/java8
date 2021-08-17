@@ -159,7 +159,7 @@ volatile
 
 ---
 
-# Spring
+# Spring Framework
 
 ## [Spring](https://github.com/codingob/spring)
 
