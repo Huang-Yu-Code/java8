@@ -121,6 +121,8 @@ volatile
 1. 只能保证基本类型变量的内存可见性，对于引用类型，无法保证引用所指向的实际对象内部数据的内存可见性。
 2. 只能保证共享对象的可见性，不能保证原子性。
 
+## [阿里巴巴Java开发手册](./docs/pdf/阿里巴巴Java开发手册1.4.0.pdf)
+
 ## [JavaSE](./se)
 
 ## [JavaEE](./ee)
@@ -141,8 +143,6 @@ volatile
 * [Web](./ee/web)
 * [WebService](./ee/webservice)
 
-## [阿里巴巴Java开发手册](./docs/pdf/阿里巴巴Java开发手册1.4.0.pdf)
-
 ## [日志](./log)
 
 * [Jul](./log/jul)
@@ -159,29 +159,26 @@ volatile
 
 ---
 
-# Spring Framework
+## Spring Framework
 
-## [Spring](https://github.com/codingob/spring)
-
-## [Spring-Boot](https://github.com/codingob/spring-boot)
-
-## [Spring-Cloud](https://github.com/codingob/spring-cloud)
-
-## [Spring-Cloud-Alibaba](https://github.com/codingob/spring-cloud-alibaba)
+* [Spring](https://github.com/codingob/spring)
+* [Spring-Boot](https://github.com/codingob/spring-boot)
+* [Spring-Cloud](https://github.com/codingob/spring-cloud)
+* [Spring-Cloud-Alibaba](https://github.com/codingob/spring-cloud-alibaba)
 
 ---
 
-# 数据结构和算法
+## 数据结构和算法
 
-## [设计模式](./design)
-
-## [算法](https://github.com/codingob/algorithm)
+* [设计模式](./design)
+* [数据结构]()
+* [算法](https://github.com/codingob/algorithm)
 
 ---
 
-# 依赖模块管理
+## 依赖/模块管理
 
-## Maven
+### Maven
 
 [官网](https://maven.apache.org)
 
@@ -189,7 +186,7 @@ volatile
 
 [仓库](https://mvnrepository.com)
 
-## Gradle
+### Gradle
 
 [官网](https://gradle.org/)
 
