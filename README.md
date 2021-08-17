@@ -125,45 +125,43 @@ volatile
 
 ## [JavaEE](./ee)
 
-### [Xml](./ee/xml)
-
-### [Servlet](./ee/servlet)
-
-### [Mail](./ee/mail)
-
-### [Jdbc](./ee/jdbc)
-
-### [Shiro](./ee/shiro)
-
-### [WebSocket](./ee/websocket)
-
-### [Amqp](./ee/amqp)
-
-### [Swagger](./ee/swagger)
-
-### [Web](./ee/web)
-
-### [WebService](./ee/webservice)
+* [Xml](./ee/xml)
+* [Servlet](./ee/servlet)
+* [Mail](./ee/mail)
+* [Jdbc](./ee/jdbc)
+    * [Mysql](./ee/jdbc/mysql)
+    * [Mybatis](./ee/jdbc/mybatis)
+    * [hibernate](./ee/jdbc/hibernate)
+    * [mongodb](./ee/jdbc/mongodb)
+    * [redis](./ee/jdbc/redis)
+* [Shiro](./ee/shiro)
+* [WebSocket](./ee/websocket)
+* [Amqp](./ee/amqp)
+* [Swagger](./ee/swagger)
+* [Web](./ee/web)
+* [WebService](./ee/webservice)
 
 ## [阿里巴巴Java开发手册](./docs/pdf/阿里巴巴Java开发手册1.4.0.pdf)
 
 ## [日志](./log)
 
+* [Jul](./log/jul)
+* [Commons Logging](./log/commons-logging)
+* [Slf4j](./log/logback)
+* [logback](./log/logback)
+* [log4j](./log/log4j)
+* [log4j2](./log/log4j2)
+
 ## [单元测试](./test)
 
-## [设计模式](./design)
-
-## [算法](https://github.com/codingob/algorithm)
+* [junit](./test/junit)
+* [mock](./test/mock)
 
 ---
 
-## [Hibernate](https://github.com/codingob/hibernate)
+# Spring
 
-## [Mybatis](https://github.com/codingob/mybatis)
-
-## [Netty](https://github.com/codingob/netty)
-
-## [Spring Framework](https://github.com/codingob/spring)
+## [Spring](https://github.com/codingob/spring)
 
 ## [Spring-Boot](https://github.com/codingob/spring-boot)
 
@@ -172,6 +170,16 @@ volatile
 ## [Spring-Cloud-Alibaba](https://github.com/codingob/spring-cloud-alibaba)
 
 ---
+
+# 数据结构和算法
+
+## [设计模式](./design)
+
+## [算法](https://github.com/codingob/algorithm)
+
+---
+
+# 依赖模块管理
 
 ## Maven
 
