@@ -12,4 +12,4 @@
 
 ## [Java Web Service](./webservice)
 
-## [Java Message Service](./jms)
+## [Amqp](./amqp)
