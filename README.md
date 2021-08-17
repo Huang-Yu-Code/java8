@@ -96,9 +96,9 @@ Java Virtual Machine(java虚拟机，HotSpot VM)
 1. 解释器
 2. JIT即时编译器
 3. GC垃圾回收器(新生代、老年代、元数据)
-   * Minor GC
-   * Major GC
-   * Full GC
+    * Minor GC
+    * Major GC
+    * Full GC
 
 ## JMM
 
@@ -125,6 +125,26 @@ volatile
 
 ## [JavaEE](./ee)
 
+### [Xml](./ee/xml)
+
+### [Servlet](./ee/servlet)
+
+### [Mail](./ee/mail)
+
+### [Jdbc](./ee/jdbc)
+
+### [Shiro](./ee/shiro)
+
+### [WebSocket](./ee/websocket)
+
+### [Amqp](./ee/amqp)
+
+### [Swagger](./ee/swagger)
+
+### [Web](./ee/web)
+
+### [WebService](./ee/webservice)
+
 ## [阿里巴巴Java开发手册](./docs/pdf/阿里巴巴Java开发手册1.4.0.pdf)
 
 ## [日志](./log)
@@ -142,8 +162,6 @@ volatile
 ## [Mybatis](https://github.com/codingob/mybatis)
 
 ## [Netty](https://github.com/codingob/netty)
-
-## [Amqp](https://github.com/codingob/amqp)
 
 ## [Spring Framework](https://github.com/codingob/spring)
 
