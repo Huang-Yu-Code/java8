@@ -17,7 +17,7 @@
         <module>web</module>
         <module>websocket</module>
         <module>webservice</module>
-        <module>jms</module>
+        <module>amqp</module>
         <module>shiro</module>
         <module>swagger</module>
     </modules>
