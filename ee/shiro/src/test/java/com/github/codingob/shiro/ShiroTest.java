@@ -1,6 +1,6 @@
 package com.github.codingob.shiro;
 
-import com.github.codingob.shiro.realm.CustomRealm;
+import com.github.codingob.shiro.realm.ShiroRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -27,7 +27,7 @@ public class ShiroTest {
         // 创建SecurityManager
         DefaultSecurityManager securityManager = new DefaultSecurityManager();
 //        securityManager.setRealm(new IniRealm("classpath:shiro.ini"));
-        CustomRealm realm = new CustomRealm();
+        ShiroRealm realm = new ShiroRealm();
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName("md5");
         credentialsMatcher.setHashIterations(1024);

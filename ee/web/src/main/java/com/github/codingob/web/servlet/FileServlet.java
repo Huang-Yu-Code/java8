@@ -36,7 +36,7 @@ public class FileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json;charset=utf-8");
         try {
-            FileUtils.upload(req);
+            FileUtils.upload(req, "D:/");
             resp.getWriter().println();
         } catch (Exception e) {
             resp.setStatus(400);

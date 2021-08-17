@@ -20,7 +20,7 @@ import java.util.List;
  * @since JDK1.8
  */
 public class FileUtils {
-    public static void upload(HttpServletRequest request) throws Exception {
+    public static void upload(HttpServletRequest request,String path) throws Exception {
         ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
         List<FileItem> fileItems = servletFileUpload.parseRequest(new ServletRequestContext(request));
         for (FileItem fileItem : fileItems) {
@@ -33,7 +33,7 @@ public class FileUtils {
                 if (itemSize > 1024 * 500) {
                     throw new Exception("文件太大(" + itemSize/1024 + "K)");
                 } else {
-                    fileItem.write(new File("D:/" + name));
+                    fileItem.write(new File(path + name));
                 }
             }
         }

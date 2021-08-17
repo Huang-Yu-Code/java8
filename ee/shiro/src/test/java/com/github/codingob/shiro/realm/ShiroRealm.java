@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.0.0
  * @since JDK1.8
  */
-public class CustomRealm extends AuthorizingRealm {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CustomRealm.class);
+public class ShiroRealm extends AuthorizingRealm {
+    private final static Logger LOGGER = LoggerFactory.getLogger(ShiroRealm.class);
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
