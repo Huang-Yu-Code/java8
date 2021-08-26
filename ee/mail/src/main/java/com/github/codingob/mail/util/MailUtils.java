@@ -16,37 +16,47 @@ import java.util.Properties;
  * @since JDK1.8
  */
 public class MailUtils {
+    private static final Properties PROPERTIES = new Properties();
+    private static boolean debug;
     private static String username;
     private static String password;
 
     static {
         try {
-            Properties properties = new Properties();
             ClassLoader classLoader = MailDemo.class.getClassLoader();
-            properties.load(classLoader.getResourceAsStream("mail.properties"));
-            username = properties.getProperty("mail.username");
-            password = properties.getProperty("mail.password");
+            PROPERTIES.load(classLoader.getResourceAsStream("mail.properties"));
+            debug = Boolean.parseBoolean(PROPERTIES.getProperty("mail.debug"));
+            username = PROPERTIES.getProperty("mail.username");
+            password = PROPERTIES.getProperty("mail.password");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void sendMail(String mail, String subject, String text) {
-        Properties properties = new Properties();
+    private static Session getSession() {
+        Session session = Session.getDefaultInstance(PROPERTIES, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+
+        });
+        session.setDebug(debug);
+        return session;
+    }
+
+    private static Message getMessage(String address, String subject, String text) throws MessagingException {
+        MimeMessage message = new MimeMessage(getSession());
+        message.setFrom(new InternetAddress(username));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
+        message.setSubject(subject, "UTF-8");
+        message.setText(text, "UTF-8");
+        return message;
+    }
+
+    public static void send(String mail, String subject, String text) {
         try {
-            Session session = Session.getDefaultInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
-            session.setDebug(true);
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(mail));
-            message.setSubject(subject, "UTF-8");
-            message.setText(text);
-            Transport.send(message);
+            Transport.send(getMessage(mail, subject, text));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,6 +11,6 @@ import com.github.codingob.mail.util.MailUtils;
  */
 public class MailDemo {
     public static void main(String[] args) {
-        MailUtils.sendMail("228259646@qq.com", "主题:测试", "正文:测试");
+        MailUtils.send("13713507941@163.com", "主题:测试", "正文:测试");
     }
 }
