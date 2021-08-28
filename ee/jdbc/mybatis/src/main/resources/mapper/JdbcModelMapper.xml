@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.codingob.mybatis.mapper.JdbcModelMapper">
+    <resultMap id="BaseResultMap" type="com.github.codingob.mybatis.model.JdbcModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="BOOLEAN" property="gender"/>
+        <result column="money" jdbcType="DECIMAL" property="money"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="delete" jdbcType="BOOLEAN" property="delete"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `name`, gender, money, create_time, `delete`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from jdbc_model
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from jdbc_model
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.github.codingob.mybatis.model.JdbcModel" useGeneratedKeys="true">
+        insert into jdbc_model(name, gender, money, create_time, `delete`) VALUES
+        <foreach collection="list" item="item" index="index">
+            (#{item.name},#{item.gender},1000.00,CURRENT_TIME, 0)
+        </foreach>
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.github.codingob.mybatis.model.JdbcModel" useGeneratedKeys="true">
+        insert into jdbc_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="money != null">
+                money,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="delete != null">
+                `delete`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BOOLEAN},
+            </if>
+            <if test="money != null">
+                #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delete != null">
+                #{delete,jdbcType=BOOLEAN},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.github.codingob.mybatis.model.JdbcModel">
+        update jdbc_model
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BOOLEAN},
+            </if>
+            <if test="money != null">
+                money = #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delete != null">
+                `delete` = #{delete,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.github.codingob.mybatis.model.JdbcModel">
+        update jdbc_model
+        set `name`      = #{name,jdbcType=VARCHAR},
+            gender      = #{gender,jdbcType=BOOLEAN},
+            money       = #{money,jdbcType=DECIMAL},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            `delete`    = #{delete,jdbcType=BOOLEAN}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

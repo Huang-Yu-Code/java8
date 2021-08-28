@@ -1,7 +1,7 @@
-package com.demo.mybatis.service;
+package com.github.codingob.mybatis.service;
 
-import com.demo.mybatis.entity.Entity;
-import com.demo.mybatis.mapper.EntityMapper;
+import com.github.codingob.mybatis.mapper.JdbcModelMapper;
+import com.github.codingob.mybatis.model.JdbcModel;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -20,7 +20,7 @@ import java.util.List;
  * @version 1.0.0
  * @since JDK1.8
  */
-public class EntityService {
+public class ModelService {
     /**
      * Mybatis会话工厂
      */
@@ -28,7 +28,7 @@ public class EntityService {
     /**
      * Mapper映射接口
      */
-    private static EntityMapper mapper;
+    private JdbcModelMapper modelMapper;
 
     // 静态初始化SQL会话工厂
     static {
@@ -48,33 +48,33 @@ public class EntityService {
      * @param sqlSession sql会话
      * @return Mapper接口
      */
-    private static EntityMapper getMapper(SqlSession sqlSession) {
-        return sqlSession.getMapper(EntityMapper.class);
+    private JdbcModelMapper getMapper(SqlSession sqlSession) {
+        return sqlSession.getMapper(JdbcModelMapper.class);
     }
 
     /**
      * 插入数据
      *
-     * @param entity 实体
+     * @param jdbcModels 实体
      * @return 影响条数
      */
-    public static int create(Entity entity) {
+    public int addItems(List<JdbcModel> jdbcModels) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.create(entity);
+            modelMapper = getMapper(session);
+            return modelMapper.insert(jdbcModels);
         }
     }
 
     /**
      * 更新数据
      *
-     * @param entity 实体
+     * @param jdbcModel 实体
      * @return 影响条数
      */
-    public static int updateById(Entity entity) {
+    public int updateById(JdbcModel jdbcModel) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.updateById(entity);
+            modelMapper = getMapper(session);
+            return modelMapper.updateByPrimaryKey(jdbcModel);
         }
     }
 
@@ -83,10 +83,10 @@ public class EntityService {
      *
      * @return 影响条数
      */
-    public static Entity getById(int id) {
+    public JdbcModel getById(long id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.getById(id);
+            modelMapper = getMapper(session);
+            return modelMapper.selectByPrimaryKey(id);
         }
     }
 
@@ -95,10 +95,10 @@ public class EntityService {
      *
      * @return 影响条数
      */
-    public static List<Entity> getList() {
+    public List<JdbcModel> getList() {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.getList();
+            modelMapper = getMapper(session);
+            return modelMapper.selectAll();
         }
     }
 
@@ -108,10 +108,10 @@ public class EntityService {
      * @param id ID
      * @return 影响条数
      */
-    public static int deleteById(int id) {
+    public int deleteById(long id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.deleteById(id);
+            modelMapper = getMapper(session);
+            return modelMapper.deleteByPrimaryKey(id);
         }
     }
 
@@ -121,23 +121,23 @@ public class EntityService {
      * @param id ID
      * @return 影响条数
      */
-    public static int delete(int id) {
+    public int delete(long id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
-            return mapper.delete(id);
+            modelMapper = getMapper(session);
+            return modelMapper.deleteByPrimaryKey(id);
         }
     }
 
     /**
      * 相同查询通过缓存返回
      */
-    public static void getByIdFromCache(int id1,int id2){
+    public void getByIdFromCache(long id1,long id2){
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            mapper = getMapper(session);
+            modelMapper = getMapper(session);
             System.out.println("========第一次查询===========");
-            System.out.println(mapper.getById(id1));
+            System.out.println(modelMapper.selectByPrimaryKey(id1));
             System.out.println("========第二次查询===========");
-            System.out.println(mapper.getById(id2));
+            System.out.println(modelMapper.selectByPrimaryKey(id2));
         }
     }
 
@@ -148,18 +148,18 @@ public class EntityService {
      * @param id2   转入ID
      * @param money 转入金额
      */
-    public static void transfer(int id1, int id2, BigDecimal money) {
+    public void transfer(long id1, long id2, BigDecimal money) {
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            mapper = getMapper(session);
-            Entity entity1 = mapper.getById(id1);
-            entity1.setMoney(entity1.getMoney().subtract(money));
-            mapper.updateById(entity1);
+            modelMapper = getMapper(session);
+            JdbcModel jdbcModel1 = modelMapper.selectByPrimaryKey(id1);
+            jdbcModel1.setMoney(jdbcModel1.getMoney().subtract(money));
+            modelMapper.updateByPrimaryKey(jdbcModel1);
 
-            Entity entity2 = mapper.getById(id2);
-            entity2.setMoney(entity2.getMoney().add(money));
-            mapper.updateById(entity2);
-            if ((entity2.getMoney().compareTo(money.add(money))) == 0) {
+            JdbcModel jdbcModel2 = modelMapper.selectByPrimaryKey(id2);
+            jdbcModel2.setMoney(jdbcModel2.getMoney().add(money));
+            modelMapper.updateByPrimaryKey(jdbcModel2);
+            if ((jdbcModel2.getMoney().compareTo(money.add(money))) == 0) {
                 throw new RuntimeException("专账异常");
             }
             session.commit();
@@ -173,7 +173,7 @@ public class EntityService {
      * @param size 页大小
      * @return 分页后的数据列表
      */
-    public static List<Entity> getLisByPage(int page, int size) {
+    public List<JdbcModel> getLisByPage(int page, int size) {
         PageHelper.startPage(page, size);
         return getList();
     }
@@ -184,7 +184,7 @@ public class EntityService {
      * @param page 页
      * @return 分页后的数据列表
      */
-    public static List<Entity> getLisByPage(int page) {
+    public List<JdbcModel> getLisByPage(int page) {
         final int size = 10;
         PageHelper.startPage(page, size);
         return getLisByPage(page, size);
@@ -195,7 +195,7 @@ public class EntityService {
      *
      * @return 分页后的数据列表
      */
-    public static List<Entity> getLisByPage() {
+    public List<JdbcModel> getLisByPage() {
         final int page = 1;
         return getLisByPage(page);
     }
