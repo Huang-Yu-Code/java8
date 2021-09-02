@@ -174,3 +174,19 @@ xml配置
     <version>1.4</version>
 </dependency>
 ```
+
+### SSL
+
+```shell
+keytool -genkey -alias tomcat -keyalg RSA -keystore D:\environment\java\apache-tomcat-9.0.52\conf
+```
+
+```xml
+<!-- Define an SSL Coyote HTTP/1.1 Connector on port 8443 -->
+<Connector
+        protocol="org.apache.coyote.http11.Http11NioProtocol"
+        port="8443" maxThreads="200"
+        scheme="https" secure="true" SSLEnabled="true"
+        keystoreFile="conf/.keystore" keystorePass="123456"
+        clientAuth="false" sslProtocol="TLS"/>
+```
